@@ -30,7 +30,7 @@ Variable names shall start with "Main_" and be declared as static.
 /***********************************************************************************************************************
 Main Program
 Main has two sections:
-
+yrr
 1. Initialization which is run once on power-up or reset.  All drivers and applications are setup here without timing
 contraints but must complete execution regardless of success or failure of starting the application. 
 

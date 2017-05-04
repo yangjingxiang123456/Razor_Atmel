@@ -88,9 +88,10 @@ Promises:
 void UserApp1Initialize(void)
 {
  
-  /* If good initialization, set state to Idle */
+ /* If good initialization, set state to Idle */
   if( 1 )
   {
+   
     UserApp1_StateMachine = UserApp1SM_Idle;
   }
   else
@@ -134,11 +135,50 @@ State Machine Function Definitions
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for ??? */
-static void UserApp1SM_Idle(void)
-{
 
-} /* end UserApp1SM_Idle() */
+static void UserApp1SM_Idle(void)
+{ 
+  static u32 COUNTER_LIMIT_MS=1;
+  static u32 u32Counter = 0;
+  static bool bLightIsOn = FALSE;
+  
+  /*Increment u32Counter every 1ms cycle*/
+  u32Counter++;
+  if(COUNTER_LIMIT_MS==500)
+  {
+     u32Counter = 0;
+     if(bLightIsOn)
+    {
+      HEARTBEAT_OFF();
+      
+    }
+    else
+    {
+      HEARTBEAT_ON();
+    }
+    return;
+  }
+  /*Check and roll over*/
+  if(u32Counter == COUNTER_LIMIT_MS)
+  {
+     u32Counter = 0;
     
+    if(bLightIsOn)
+    {
+      HEARTBEAT_OFF();
+      COUNTER_LIMIT_MS= COUNTER_LIMIT_MS*2;
+    }
+    else
+    {
+      HEARTBEAT_ON();
+    }
+    
+    bLightIsOn = !bLightIsOn;
+  }
+ /* end UserApp1SM_Idle() */
+    
+https://github.com/zhanggangcheng526/Razor_Atmel/tree/firmware-assignment-frequence-decrease
+} /* end UserApp1SM_Idle() */  
 #if 0
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Handle an error */
