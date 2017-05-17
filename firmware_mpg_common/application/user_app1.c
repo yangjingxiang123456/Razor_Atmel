@@ -51,7 +51,8 @@ extern volatile u32 G_u32ApplicationFlags;             /* From main.c */
 
 extern volatile u32 G_u32SystemTime1ms;                /* From board-specific source file */
 extern volatile u32 G_u32SystemTime1s;                 /* From board-specific source file */
-
+extern u8 G_au8DebugScanfBuffer[];  /* From debug.c */
+extern u8 G_u8DebugScanfCharCount; 
 
 /***********************************************************************************************************************
 Global variable definitions with scope limited to this local application.
@@ -84,6 +85,7 @@ Requires:
 
 Promises:
   - 
+
 */
 void UserApp1Initialize(void)
 {
@@ -92,7 +94,7 @@ void UserApp1Initialize(void)
   if( 1 )
   {
    
-    UserApp1_StateMachine = UserApp1SM_Idle;
+    UserApp1_StateMachine =Debug_serial_port;
   }
   else
   {
@@ -135,6 +137,102 @@ State Machine Function Definitions
 
 /*-------------------------------------------------------------------------------------------------------------------*/
 /* Wait for ??? */
+//end Debug Interface 
+
+void Debug_serial_port(void)
+{   u8 u8_temp = 0;
+    static u8 u8_temp_counter=0;
+	static u8 u8_temp_counter1=0;
+	static u8 u8_temp_bit     =0;
+    u8 u8_name[] ="yangyang";
+	static u8 u8_bit_set      =0;
+	u8 u8_character[] = "*********";
+    u8 string_u8[]="\n\rCharacters in buffer: ";
+	static u8 u8NumCharsMessage[] = "\n\rCharacters in buffer: ";
+	static bool send_port = FALSE;
+	if(WasButtonPressed(BUTTON0))
+		{ButtonAcknowledge(BUTTON0);
+	     DebugPrintf(string_u8);
+		 DebugLineFeed();
+		   if(send_port == FALSE)
+		   	send_port= TRUE;
+		   else 
+		   	send_port= FALSE;
+		  }
+        
+  
+  /* Print message with number of characters in scanf buffer */
+  if(WasButtonPressed(BUTTON3))
+  {
+	   ButtonAcknowledge(BUTTON3);
+	   
+	    u8_temp_counter1=0;//重新计算
+	   
+	 
+	  for(u8_temp=0;u8_temp<=G_u8DebugScanfCharCount;u8_temp++)
+	  	
+	          { 
+	            if(G_au8DebugScanfBuffer[u8_temp]== u8_name[u8_temp_counter])
+	          	{
+	          	u8_temp_counter++;
+					if(u8_temp_counter>=6)
+						{
+						u8_temp_counter = 0;
+						u8_temp_counter1++;
+						}
+	          	  
+	          	  //send_port= TRUE;
+	          	}
+	          
+			  	///again back
+	  	}
+  	}
+  if(WasButtonPressed(BUTTON2))
+	  	{
+	  	   DebugPrintf("\r\n***\r\n");
+			ButtonAcknowledge(BUTTON2);
+			DebugPrintNumber(u8_temp_counter1);
+			DebugPrintf("\r\n***");
+			DebugPrintf("\r\n");
+			DebugPrintf("your name:\r\n");
+			//DebugPrintf(u8_name);
+			DebugPrintf("******\r\n");
+			//DebugPrintf(G_au8DebugScanfBuffer);
+	  	}
+  if(WasButtonPressed(BUTTON1))
+	  	{
+		  	ButtonAcknowledge(BUTTON1);
+		  	for(u8_temp_counter=0;u8_temp_counter<=4;u8_temp_counter++)
+			  	{
+			  	  if(u8_temp_counter1%(10^u8_temp_counter)==0)//求出多少位
+				  	continue;
+				  else
+				  	u8_bit_set++;  
+			  	}
+		  	
+		  	 for(u8_temp_counter=0;u8_temp_counter<=u8_bit_set;u8_temp_counter++)
+		  	 	{
+		  	 	   u8_character[u8_temp_counter]='*';
+		  	 	}
+	                   DebugPrintf("\r\n");
+		  	   DebugPrintf(u8_character);
+			   DebugPrintf("\r\n");
+			   DebugPrintf("*");
+			   DebugPrintNumber(u8_temp_counter1);
+			   DebugPrintf("*");
+			   DebugPrintf("\r\n");
+	                   
+	                  DebugPrintf(u8_character);
+	                  DebugPrintf("\r\n");
+				//DebugPrintf(G_au8DebugScanfBuffer);
+	  	}
+	
+
+
+}
+
+
+
 
 static void UserApp1SM_Idle(void)
 { 

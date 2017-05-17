@@ -9,7 +9,6 @@ TriggerName=main
 LimitSize=0
 ByteLimit=50
 [DebugChecksum]
-Checksum=-1015992618
 [JLinkDriver]
 CStepIntDis=_ 0
 WatchCond=_ 0
@@ -36,17 +35,6 @@ ActionState=1
 Enabled=_ 0
 [watch_formats]
 Fmt0={W}3:UserApp_u8AdcResultCount	3	0
-[TermIOLog]
-LoggingEnabled=_ 0
-LogFile=_ ""
-[CallStackLog]
-Enabled=0
-[DriverProfiling]
-Enabled=0
-Mode=1
-Graph=0
-Symbiont=0
-Exclusions=
 [InterruptLog]
 LogEnabled=0
 SumEnabled=0
