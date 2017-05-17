@@ -175,7 +175,7 @@ void Debug_serial_port(void)
 	            if(G_au8DebugScanfBuffer[u8_temp]== u8_name[u8_temp_counter])
 	          	{
 	          	u8_temp_counter++;
-					if(u8_temp_counter>=6)
+					if(u8_temp_counter>=8)
 						{
 						u8_temp_counter = 0;
 						u8_temp_counter1++;
@@ -202,7 +202,7 @@ void Debug_serial_port(void)
   if(WasButtonPressed(BUTTON1))
 	  	{
 		  	ButtonAcknowledge(BUTTON1);
-		  	for(u8_temp_counter=0;u8_temp_counter<=4;u8_temp_counter++)
+		  	for(u8_temp_counter=0;u8_temp_counter<=8;u8_temp_counter++)
 			  	{
 			  	  if(u8_temp_counter1%(10^u8_temp_counter)==0)//求出多少位
 				  	continue;
